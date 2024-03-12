@@ -4,7 +4,11 @@ import { cookies } from "next/headers";
 
 const getMe = async (token?: string) => {
   if (!token) {
-    return { name: "Undefined", photoUrl: "Undefined", role: "Undefined" };
+    return {
+      name: { fullName: "Undefined" },
+      photos: { small: "Undefined" },
+      role: "Undefined",
+    };
   }
   const response = await fetch("https://api.prd.aws.netlight.com/me", {
     headers: { authorization: `Bearer ${token}` },
@@ -18,11 +22,12 @@ const getMe = async (token?: string) => {
 export default async function Home() {
   const token = getCookie("token", { cookies });
   const me = await getMe(token);
+  console.log(me);
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono lg:flex">
-        <p className="text-3xl font-bold">
+      <div className="z-10 max-w-5xl w-full items-center justify-between lg:flex">
+        <p className=" px-5 text-3xl font-bold font-proximaNova ">
           WELCOME TO THE NEXTJS LEARNING MODULE!
         </p>
         <Profile
@@ -32,6 +37,7 @@ export default async function Home() {
         />
       </div>
 
+      <p>Down below you can find some useful links</p>
       <div className="mb-32 grid text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-4 lg:text-left">
         <a
           href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
@@ -68,19 +74,19 @@ export default async function Home() {
         </a>
 
         <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
+          href="https://docs.api.prd.aws.netlight.com/"
           className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
           target="_blank"
           rel="noopener noreferrer"
         >
           <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{" "}
+            Netlight API{" "}
             <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
               -&gt;
             </span>
           </h2>
           <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Explore starter templates for Next.js.
+            Explore the Netlight API that will be used throughout the module.
           </p>
         </a>
 
