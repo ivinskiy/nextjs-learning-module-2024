@@ -6,7 +6,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { useEffect, useState } from "react";
 import { getToken } from "@/utils/getToken";
-import { deleteCookie, getCookie, setCookie } from "cookies-next";
+import { setCookie } from "cookies-next";
 
 const proximaNova = localFont({
   src: [
@@ -35,19 +35,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   const [token, setToken] = useState<AuthenticationResult | null>(null);
-  console.log(token);
 
   useEffect(() => {
-    // const account = msalInstance.getAllAccounts()[0];
-    // console.log("account", account);
     // Has to be done client-side due to Microsoft Auth
     const handleGetToken = async () => {
       const tokenResponse = await getToken();
-      const existingCookie = getCookie("token");
-      if (existingCookie) {
-        deleteCookie("token");
-      }
-      setCookie("token", tokenResponse);
+      setCookie("token", tokenResponse.accessToken);
       setToken(tokenResponse);
     };
     handleGetToken();
@@ -55,7 +48,7 @@ export default function RootLayout({
 
   return (
     <html lang="en" className={`${proximaNova.variable}`}>
-      <body>{<></>}</body>
+      {token ? <body>{children}</body> : <body />}
     </html>
   );
 }

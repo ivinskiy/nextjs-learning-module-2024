@@ -1,6 +1,4 @@
 import { msalInstance } from "../services/msal";
-import { AccountInfo } from "@azure/msal-browser";
-import { setCookie } from "cookies-next";
 
 export const getToken = async () => {
   // await msalInstance.initialize();
@@ -9,15 +7,14 @@ export const getToken = async () => {
   // });
   await msalInstance.ssoSilent({
     scopes: ["api://717aaf54-6553-432e-85ca-b2399c7f87f6/.default"],
-    loginHint: "vaiv@netlight.com",
+    loginHint: process.env.NEXT_PUBLIC_USERNAME,
   });
   const account = msalInstance.getAllAccounts()[0];
-  console.log(account);
+  console.log("account", account);
 
   const token = await msalInstance.acquireTokenSilent({
     scopes: ["api://717aaf54-6553-432e-85ca-b2399c7f87f6/.default"],
     account: account,
   });
-  setCookie("token", token.accessToken);
   return token;
 };
