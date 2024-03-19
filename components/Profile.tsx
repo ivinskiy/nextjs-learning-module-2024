@@ -8,7 +8,13 @@ export const Profile: FC<{ name: string; photoUrl: string; role: string }> = ({
 }) => {
   return (
     <div>
-      <Image src={photoUrl} alt={name} width={96} height={96} />
+      <Image
+        src={photoUrl}
+        alt={name}
+        width={96}
+        height={96}
+        className="rounded-xl"
+      />
       <p>{name}</p>
       <p>{role}</p>
     </div>
