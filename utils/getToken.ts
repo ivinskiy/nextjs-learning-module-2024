@@ -1,7 +1,6 @@
 import { msalInstance } from "../services/msal";
 
 export const getToken = async () => {
-  // await msalInstance.initialize();
   // msalInstance.loginRedirect({
   //   scopes: ["api://717aaf54-6553-432e-85ca-b2399c7f87f6/.default"],
   // });

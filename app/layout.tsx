@@ -1,12 +1,11 @@
 "use client";
 import { msalInstance } from "@/services/msal";
-import { AuthenticationResult } from "@azure/msal-browser";
 
 import localFont from "next/font/local";
 import "./globals.css";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { getToken } from "@/utils/getToken";
-import { setCookie } from "cookies-next";
+import { getCookie, setCookie } from "cookies-next";
 
 const proximaNova = localFont({
   src: [
@@ -27,28 +26,59 @@ const proximaNova = localFont({
   variable: "--font-proxima-nova",
 });
 
+/**
+ * Microsoft Authentication must happen via the browser
+ * Can switch between having a useEffect hook that handles it, OR via a button to log you in
+ */
 msalInstance.initialize();
 
-export default function RootLayout({
+const RootLayout = ({
   children,
 }: Readonly<{
   children: React.ReactNode;
-}>) {
-  const [token, setToken] = useState<AuthenticationResult | null>(null);
+}>) => {
+  const [hasTokenBeenSet, setHasTokenBeenSet] = useState(false);
 
   useEffect(() => {
-    // Has to be done client-side due to Microsoft Auth
-    const handleGetToken = async () => {
-      const tokenResponse = await getToken();
-      setCookie("token", tokenResponse.accessToken);
-      setToken(tokenResponse);
-    };
-    handleGetToken();
+    if (typeof getCookie("token") !== "undefined") {
+      setHasTokenBeenSet(true);
+    }
   }, []);
+
+  // useEffect(() => {
+  //   // Has to be done client-side due to Microsoft Auth
+  //   const handleGetToken = async () => {
+  //     const tokenResponse = await getToken();
+  //     setCookie("token", tokenResponse.accessToken);
+  //     setHasTokenBeenSet(true);
+  //   };
+  //   handleGetToken();
+  // }, []);
 
   return (
     <html lang="en" className={`${proximaNova.variable}`}>
-      {token ? <body>{children}</body> : <body />}
+      <body>
+        {!hasTokenBeenSet ? (
+          <div className="w-full h-screen grid place-items-center">
+            <button
+              className="bg-gray-100 px-3 py-2 rounded-xl"
+              onClick={async () => {
+                // Log in and set cookie
+                const tokenResponse = await getToken();
+
+                setCookie("token", tokenResponse.accessToken, { maxAge: 3600 });
+                setHasTokenBeenSet(true);
+              }}
+            >
+              LOG IN
+            </button>
+          </div>
+        ) : (
+          children
+        )}
+      </body>
     </html>
   );
-}
+};
+
+export default RootLayout;

@@ -1,13 +1,13 @@
-import { Profile } from "@/components/Profile";
+import { Profile } from "@/components/Profile/Profile";
 import { getCookie } from "cookies-next";
 import { cookies } from "next/headers";
 
 const getMe = async (token?: string) => {
   if (!token) {
     return {
-      name: { fullName: "Undefined" },
-      photos: { small: "Undefined" },
-      role: "Undefined",
+      name: { fullName: undefined },
+      photos: { small: undefined },
+      role: undefined,
     };
   }
   const response = await fetch("https://api.prd.aws.netlight.com/me", {
@@ -18,7 +18,7 @@ const getMe = async (token?: string) => {
   return me;
 };
 
-export default async function Home() {
+const Home = async () => {
   const token = getCookie("token", { cookies });
   const me = await getMe(token);
   console.log(me);
@@ -110,4 +110,6 @@ export default async function Home() {
       </div>
     </main>
   );
-}
+};
+
+export default Home;
