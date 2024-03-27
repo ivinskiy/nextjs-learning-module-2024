@@ -8,13 +8,16 @@ export const Section: FC<{ profiles: ProfileProps[] }> = ({ profiles }) => {
   useEffect(() => {}, []);
 
   return (
-    <div>
+    <div className="flex flex-col justify-between gap-10 items-center">
       <div className="grid grid-cols-2 gap-5">
-        {profiles.map((profile) => (
+        {profiles.slice(0, limitToShow).map((profile) => (
           <Profile {...profile} key={profile.name} />
         ))}
       </div>
-      <button className="" onClick={() => setLimitToShow((prev) => prev + 6)}>
+      <button
+        className="bg-gray-100 rounded-xl w-[140px]"
+        onClick={() => setLimitToShow((prev) => prev + 6)}
+      >
         Show more
       </button>
     </div>

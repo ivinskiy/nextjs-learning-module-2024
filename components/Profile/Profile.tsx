@@ -3,7 +3,7 @@ import { FC } from "react";
 
 export type ProfileProps = {
   name: string;
-  photoUrl: string;
+  photoUrl?: string;
   role: string;
 };
 
@@ -11,7 +11,7 @@ export const Profile: FC<ProfileProps> = ({ name, photoUrl, role }) => {
   return (
     <div>
       <Image
-        src={photoUrl}
+        src={photoUrl ?? "/"}
         alt={name}
         width={96}
         height={96}
