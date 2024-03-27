@@ -1,27 +1,24 @@
 import { Profile } from "@/components/Profile/Profile";
+import { mockConsultant } from "@/mock/mockConsultant";
+import { Consultant } from "@/types/consultant";
 import { getCookie } from "cookies-next";
 import { cookies } from "next/headers";
+import Link from "next/link";
 
-const getMe = async (token?: string) => {
+const getMe = async (token?: string): Promise<Consultant> => {
   if (!token) {
-    return {
-      name: { fullName: undefined },
-      photos: { small: undefined },
-      role: undefined,
-    };
+    return mockConsultant;
   }
   const response = await fetch("https://api.prd.aws.netlight.com/me", {
     headers: { authorization: `Bearer ${token}` },
   });
   const me = await response.json();
-
   return me;
 };
 
 const Home = async () => {
   const token = getCookie("token", { cookies });
   const me = await getMe(token);
-  console.log(me);
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
@@ -31,10 +28,11 @@ const Home = async () => {
         </p>
         <Profile
           name={me.name.fullName}
-          photoUrl={me.photos.small}
+          photoUrl={me.photos?.small}
           role={me.role}
         />
       </div>
+      <Link href={"/consultants"}>To Consultants page</Link>
 
       <div>
         <p className="mb-5 px-5 text-2xl font-bold ">Useful links</p>
