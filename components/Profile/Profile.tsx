@@ -1,15 +1,22 @@
 import Image from "next/image";
+import Link from "next/link";
 import { FC } from "react";
 
 export type ProfileProps = {
+  netlightId: string;
   name: string;
   photoUrl?: string;
   role: string;
 };
 
-export const Profile: FC<ProfileProps> = ({ name, photoUrl, role }) => {
+export const Profile: FC<ProfileProps> = ({
+  name,
+  photoUrl,
+  role,
+  netlightId,
+}) => {
   return (
-    <div>
+    <Link href={`/consultants/${netlightId}`}>
       <Image
         src={photoUrl ?? "/"}
         alt={name}
@@ -19,6 +26,6 @@ export const Profile: FC<ProfileProps> = ({ name, photoUrl, role }) => {
       />
       <p>{name}</p>
       <p>{role}</p>
-    </div>
+    </Link>
   );
 };

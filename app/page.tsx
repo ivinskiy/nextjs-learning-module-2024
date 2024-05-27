@@ -30,6 +30,7 @@ const Home = async () => {
           name={me.name.fullName}
           photoUrl={me.photos?.small}
           role={me.role}
+          netlightId={me.netlightId}
         />
       </div>
       <Link href={"/consultants"}>To Consultants page</Link>

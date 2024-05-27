@@ -18,6 +18,7 @@ export const UpcomingSection = async () => {
     <Section
       profiles={upcoming.map((profile: Consultant) => {
         return {
+          netlightId: profile.netlightId,
           name: profile.name.fullName,
           photoUrl: profile.photos?.small,
           role: profile.role,

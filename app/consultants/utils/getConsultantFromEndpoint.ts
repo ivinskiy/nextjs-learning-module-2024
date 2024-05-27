@@ -1,12 +1,12 @@
 import { mockConsultant } from "@/mock/mockConsultant";
 import { Consultant } from "@/types/consultant";
 
-export const getConsultantsFromEndpoint = async (
+export const getConsultantFromEndpoint = async (
   endpoint: string,
   token?: string
-): Promise<Consultant[]> => {
+): Promise<Consultant> => {
   if (!token) {
-    return [mockConsultant];
+    return mockConsultant;
   }
   const response = await fetch(`https://api.prd.aws.netlight.com/${endpoint}`, {
     headers: { authorization: `Bearer ${token}` },

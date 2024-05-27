@@ -15,6 +15,7 @@ export const AvailableSection = async () => {
     <Section
       profiles={available.map((profile: Consultant) => {
         return {
+          netlightId: profile.netlightId,
           name: profile.name.fullName,
           photoUrl: profile.photos?.small,
           role: profile.role,
